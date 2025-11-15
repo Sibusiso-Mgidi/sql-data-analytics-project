@@ -2,9 +2,6 @@
 
 A structured and comprehensive collection of SQL scripts built for data exploration, analytics, and reporting. This repository equips data analysts and BI professionals with practical, ready-to-run SQL queries to explore relational databases, analyze key metrics, identify trends, and uncover actionable insights.
 
-![Data Analytics](docs/Project Roadmap.png)
-
-
 ## 📑 Table of Contents
 
 1.  Overview
