@@ -1,12 +1,5 @@
 # SQL Data Analytics Project
 
-![Stars](https://img.shields.io/github/stars/Sibusiso-Mgidi/sql-data-analytics-project?style=flat-square)\
-![Forks](https://img.shields.io/github/forks/Sibusiso-Mgidi/sql-data-analytics-project?style=flat-square)\
-![Issues](https://img.shields.io/github/issues/Sibusiso-Mgidi/sql-data-analytics-project?style=flat-square)\
-![Last
-Commit](https://img.shields.io/github/last-commit/Sibusiso-Mgidi/sql-data-analytics-project?style=flat-square)\
-![Languages](https://img.shields.io/github/languages/top/Sibusiso-Mgidi/sql-data-analytics-project?style=flat-square)
-
 A structured and comprehensive collection of SQL scripts built for data exploration, analytics, and reporting. This repository equips data
 analysts and BI professionals with practical, ready-to-run SQL queries
 to explore relational databases, analyze key metrics, identify trends,
