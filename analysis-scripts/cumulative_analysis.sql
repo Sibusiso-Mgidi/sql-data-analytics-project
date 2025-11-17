@@ -1,31 +1,35 @@
 /*
-===============================================================================
-Cumulative Analysis
-===============================================================================
-Purpose:
-    - To calculate running totals or moving averages for key metrics.
-    - To track performance over time cumulatively.
-    - Useful for growth analysis or identifying long-term trends.
+================================================================================
+Cumulative Metrics Overview
+================================================================================
+Objective:
+    - Generate time-based cumulative insights for long-term performance tracking.
+    - Compute yearly totals alongside running sales and moving average indicators.
 
-SQL Functions Used:
-    - Window Functions: SUM() OVER(), AVG() OVER()
-===============================================================================
+Core Techniques Used:
+    - Window functions: SUM() OVER(), AVG() OVER()
+    - Time bucketing with DATETRUNC()
+
+================================================================================
 */
 
--- Calculate the total sales per month 
--- and the running total of sales over time 
+-- ============================================================================
+-- Yearly Sales Summary with Running & Moving Metrics
+-- ============================================================================
 SELECT
-	order_date,
-	total_sales,
-	SUM(total_sales) OVER (ORDER BY order_date) AS running_total_sales,
-	AVG(avg_price) OVER (ORDER BY order_date) AS moving_average_price
-FROM
-(
-    SELECT 
-        DATETRUNC(year, order_date) AS order_date,
-        SUM(sales_amount) AS total_sales,
-        AVG(price) AS avg_price
+    sales_year,
+    yearly_sales,
+    SUM(yearly_sales) OVER (ORDER BY sales_year) AS cumulative_sales,
+    AVG(yearly_avg_price) OVER (ORDER BY sales_year) AS rolling_avg_price
+FROM (
+    /*----------------------------------------------------------------------
+      Step 1: Aggregate base metrics at the yearly level
+    ----------------------------------------------------------------------*/
+    SELECT
+        DATETRUNC(year, order_date) AS sales_year,
+        SUM(sales_amount) AS yearly_sales,
+        AVG(price) AS yearly_avg_price
     FROM gold.fact_sales
     WHERE order_date IS NOT NULL
     GROUP BY DATETRUNC(year, order_date)
-) t
+) AS base;
