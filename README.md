@@ -10,6 +10,9 @@ A structured and comprehensive collection of SQL scripts built for data explorat
 4.  License
 5.  About Me
 
+## 📈 Project Road Map
+![Project Road Map](docs/project_road_map.png)
+
 ## Overview
 
 This project serves as a practical SQL toolkit for anyone working with
