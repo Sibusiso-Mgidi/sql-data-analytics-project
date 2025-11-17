@@ -1,6 +1,7 @@
 # SQL Data Analytics Project
 
 A structured and comprehensive collection of SQL scripts built for data exploration, analytics, and reporting. This repository equips data analysts and BI professionals with practical, ready-to-run SQL queries to explore relational databases, analyze key metrics, identify trends, and uncover actionable insights.
+![SQL Data Analytics Project](docs/DB_schema.png)
 
 ## 📑 Table of Contents
 
