@@ -1,49 +1,71 @@
 /*
 ===============================================================================
-Change Over Time Analysis
+Change Over Time Analysis (Optimized)
 ===============================================================================
 Purpose:
-    - To track trends, growth, and changes in key metrics over time.
-    - For time-series analysis and identifying seasonality.
-    - To measure growth or decline over specific periods.
+    - Reduce repeated function calls for improved performance.
+    - Improve readability while maintaining identical output.
 
-SQL Functions Used:
-    - Date Functions: DATEPART(), DATETRUNC(), FORMAT()
-    - Aggregate Functions: SUM(), COUNT(), AVG()
+Function used:
+    - CTE
 ===============================================================================
 */
 
--- Analyse sales performance over time
--- Quick Date Functions
-SELECT
-    YEAR(order_date) AS order_year,
-    MONTH(order_date) AS order_month,
-    SUM(sales_amount) AS total_sales,
-    COUNT(DISTINCT customer_key) AS total_customers,
-    SUM(quantity) AS total_quantity
-FROM gold.fact_sales
-WHERE order_date IS NOT NULL
-GROUP BY YEAR(order_date), MONTH(order_date)
-ORDER BY YEAR(order_date), MONTH(order_date);
+WITH sales AS (
+    SELECT
+        order_date,
+        sales_amount,
+        customer_key,
+        quantity,
 
--- DATETRUNC()
-SELECT
-    DATETRUNC(month, order_date) AS order_date,
-    SUM(sales_amount) AS total_sales,
-    COUNT(DISTINCT customer_key) AS total_customers,
-    SUM(quantity) AS total_quantity
-FROM gold.fact_sales
-WHERE order_date IS NOT NULL
-GROUP BY DATETRUNC(month, order_date)
-ORDER BY DATETRUNC(month, order_date);
+        -- Pre-calc for YEAR() + MONTH()
+        YEAR(order_date) AS order_year,
+        MONTH(order_date) AS order_month,
 
--- FORMAT()
+        -- Pre-calc for DATETRUNC()
+        DATETRUNC(month, order_date) AS order_month_start,
+
+        -- Pre-calc for FORMAT()
+        FORMAT(order_date, 'yyyy-MMM') AS order_month_label
+    FROM gold.fact_sales
+    WHERE order_date IS NOT NULL
+)
+
+-- ===========================
+-- 1. YEAR + MONTH Breakdown
+-- ===========================
 SELECT
-    FORMAT(order_date, 'yyyy-MMM') AS order_date,
+    order_year,
+    order_month,
     SUM(sales_amount) AS total_sales,
     COUNT(DISTINCT customer_key) AS total_customers,
     SUM(quantity) AS total_quantity
-FROM gold.fact_sales
-WHERE order_date IS NOT NULL
-GROUP BY FORMAT(order_date, 'yyyy-MMM')
-ORDER BY FORMAT(order_date, 'yyyy-MMM');
+FROM sales
+GROUP BY order_year, order_month
+ORDER BY order_year, order_month;
+
+
+-- ===========================
+-- 2️. DATETRUNC(MONTH) Version
+-- ===========================
+SELECT
+    order_month_start AS order_date,
+    SUM(sales_amount) AS total_sales,
+    COUNT(DISTINCT customer_key) AS total_customers,
+    SUM(quantity) AS total_quantity
+FROM sales
+GROUP BY order_month_start
+ORDER BY order_month_start;
+
+
+-- ===========================
+-- 3️. FORMAT(MONTH) Version
+-- ===========================
+SELECT
+    order_month_label AS order_date,
+    SUM(sales_amount) AS total_sales,
+    COUNT(DISTINCT customer_key) AS total_customers,
+    SUM(quantity) AS total_quantity
+FROM sales
+GROUP BY order_month_label
+ORDER BY order_month_label;
